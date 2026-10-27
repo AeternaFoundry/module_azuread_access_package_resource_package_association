@@ -6,12 +6,21 @@ Required:
     - catalog_resource_association_id
 Optional:
     - access_type
+    - timeouts (block):
+        - create (optional)
+        - delete (optional)
+        - read (optional)
 EOT
 
   type = map(object({
     access_package_id               = string
     catalog_resource_association_id = string
     access_type                     = optional(string)
+    timeouts = optional(object({
+      create = optional(string)
+      delete = optional(string)
+      read   = optional(string)
+    }))
   }))
   validation {
     condition = alltrue([
@@ -35,7 +44,7 @@ EOT
         v.access_type == null || (contains(["Member", "Owner"], v.access_type))
       )
     ])
-    error_message = "must be one of: Member, Owner"
+    error_message = "must be one of: \"Member\", \"Owner\""
   }
 }
 
